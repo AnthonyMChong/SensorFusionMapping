@@ -8,7 +8,7 @@ import matplotlib.patches as mpatches
 # taking in csv of format:
 # b_lat,b_long,b_accuracy,GPS_lat,GPS_long,GPS_accuracy,f_lat,f_long
 linecount = 1
-with open("BecGPSSensorFusionEastToWest") as Datafile:
+with open("BecGPSSensorFusionWestToEast") as Datafile:
     for line in Datafile:
         datalist= csv.reader(Datafile)
         datalist = list(datalist)
@@ -46,15 +46,21 @@ matplotlib.pyplot.plot( [StartLong, StopLong], [StartLat, StopLat], 'y-', lw=3)
 
 findstatLat = []
 findstatLong = []
+
+ax = fig.gca()
 for n in range(0,len(datalist)):
     BecestimateLat = float(datalist[n][0])   #Enter index of predicted X here
     BecestimateLong= float(datalist[n][1])    #Enter index of predicted Y here
     Becestimateaccuracy = float(datalist[n][2]) #Index of BLE accuracy
     matplotlib.pyplot.plot(BecestimateLong,BecestimateLat , 'bo')
+    ax.add_artist(matplotlib.pyplot.Circle([BecestimateLong,BecestimateLat], radius=(Becestimateaccuracy*0.0000111),alpha = 0.3, color='cyan'))
+
     GPSestimateLat = float(datalist[n][3])  # Enter index of predicted X here
     GPSestimateLong = float(datalist[n][4])  # Enter index of predicted Y here
     GPSestimateaccuracy = float(datalist[n][5])  # Index of BLE accuracy
     matplotlib.pyplot.plot(GPSestimateLong, GPSestimateLat, 'ro')
+    #ax.add_artist(matplotlib.pyplot.Circle([GPSestimateLong, GPSestimateLat], radius=(GPSestimateaccuracy * 0.0000111), alpha=0.3,color='pink'))
+
     FinalestimateLat = float(datalist[n][6])  # Enter index of predicted X here
     FinalestimateLong = float(datalist[n][7])  # Enter index of predicted Y here
     #Finalestimateaccuracy = float(datalist[n][8])  # Index of BLE accuracy
